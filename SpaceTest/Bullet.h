@@ -1,0 +1,23 @@
+#ifndef BULLET_H
+#define BULLET_H
+
+#include <SFML/Graphics.hpp>
+#include <vector>
+class Bullet
+{
+private:
+	int bulletSpeed;
+	sf::Vector2f direction;
+	sf::CircleShape shape;
+
+public:
+	Bullet();
+	sf::CircleShape* getSprite();
+	sf::Vector2f getDirection();
+	void setDirection(float x, float y);
+	void setPosition(sf::Vector2f passedPosition);
+	bool isOffScreen(int screenHeight, int screenWidth);
+	void move();
+	sf::FloatRect getBoundBox();
+};
+#endif
