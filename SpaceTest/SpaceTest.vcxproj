@@ -166,6 +166,18 @@
     <ClInclude Include="PlayerShip.h" />
     <ClInclude Include="Rock.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Cage.png" />
+    <Image Include="PlayerShip.png" />
+    <Image Include="Rock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="highscores.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Mr Sunshine 2.ttf" />
+    <Font Include="Mr Sunshine.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

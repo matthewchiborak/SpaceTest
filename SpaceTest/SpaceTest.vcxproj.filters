@@ -51,4 +51,28 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="PlayerShip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Cage.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Rock.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="highscores.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Mr Sunshine 2.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="Mr Sunshine.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+  </ItemGroup>
 </Project>
