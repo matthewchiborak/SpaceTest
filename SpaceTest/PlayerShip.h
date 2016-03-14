@@ -26,7 +26,6 @@ class PlayerShip
 		bool isOffScreen(int screenHeight, int screenWidth);
 		void move(const double PI, int width, int height);
 		sf::FloatRect getBoundBox();
-		//void setCurrentAngle(int angle);
 		void rotateClockwise();
 		void rotateCounterClockwise();
 		int getCurrentAngle();

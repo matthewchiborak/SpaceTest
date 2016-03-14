@@ -5,8 +5,6 @@ Bullet::Bullet()
 	bulletSpeed = 13;
 	shape.setRadius(5.f);
 	shape.setFillColor(sf::Color::Yellow);
-	
-	//sprite.setOrigin(32, 32);
 }
 
 sf::CircleShape* Bullet::getSprite()

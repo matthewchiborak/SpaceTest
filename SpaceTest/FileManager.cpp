@@ -5,6 +5,7 @@ FileManager::FileManager()
 	numberOfEntries = 0;
 }
 
+//Reads the highscores and stores them for later
 bool FileManager::readScoreFile(std::string fileName)
 {
 	std::string line;
@@ -68,6 +69,7 @@ int* FileManager::getNumberOfEntries()
 	return &numberOfEntries;
 }
 
+//Save the new highscores
 bool FileManager::save(std::string fileName)
 {
 	std::ofstream newFile;

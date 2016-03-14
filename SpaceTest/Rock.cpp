@@ -8,9 +8,6 @@ Rock::Rock(sf::Texture* conTexture)
 	sprite.setOrigin(32, 32);
 	power = 10;
 	value = 100;
-	//explosionCounter = 0;
-	//fireSheet = explosionSheet;
-	//spriteSize = 64;
 }
 
 sf::Sprite* Rock::getSprite()
@@ -67,15 +64,3 @@ int Rock::getValue()
 	return value;
 }
 
-/*void Rock::destroy()
-{
-		sf::IntRect spriteBox(((explosionCounter % 4))*spriteSize, ((explosionCounter % 4))*spriteSize, spriteSize, spriteSize);
-		fireTexture.loadFromImage(*fireSheet, spriteBox);
-		sprite.setTexture(fireTexture);
-		explosionCounter++;
-}
-
-int Rock::getExplosionCounter()
-{
-	return explosionCounter;
-}*/

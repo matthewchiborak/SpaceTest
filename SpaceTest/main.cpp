@@ -15,7 +15,7 @@
 int main()
 {
 	//Load high scores
-	std::string fileName = "highscores.txt";
+	std::string fileName = "Resources/highscores.txt";
 	FileManager scoreManager;
 	scoreManager.readScoreFile(fileName);
 
@@ -30,6 +30,7 @@ int main()
 
 	int score = 0;
 
+	//Limit how many shots can be on the screen at once
 	const int maxBulletsOnScreen = 10;
 
 	Bullet* bulletHolder[maxBulletsOnScreen];
@@ -41,6 +42,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1024, 683), "SpaceLand");
 	window.setVerticalSyncEnabled(true);
 
+	//Create the healthbars and ship shield for use in the game
 	int healthBarHeight = 30;
 	sf::RectangleShape healthBarBack(sf::Vector2f(200, healthBarHeight));
 	healthBarBack.setFillColor(sf::Color::Red);
@@ -60,8 +62,9 @@ int main()
 	shieldShape.setOutlineThickness(4);
 	shieldShape.setOutlineColor(sf::Color::Blue);
 
+	//Load the in game text font
 	sf::Font font;
-	if (!font.loadFromFile("Mr Sunshine.ttf"))
+	if (!font.loadFromFile("Resources/Mr Sunshine.ttf"))
 	{
 		std::cout << "Font loading error\n";
 	}
@@ -71,24 +74,10 @@ int main()
 	scoreText.setString("Test");
 	scoreText.setCharacterSize(24);
 	scoreText.setColor(sf::Color::White);
-	//scoreText.setPosition(windowWidth / 2, 0);
-
-	/*sf::Image fireImageSheet;
-	if (!fireImageSheet.loadFromFile("Fire.png"))
-	{
-		std::cout << "Failed to load fire\n";
-	}
-
-	const int maxNumberOfFire = 20;
-	Explosion* fireHolder[maxNumberOfFire];
-
-	for (int i = 0; i < maxNumberOfFire; i++)
-	{
-		fireHolder[i] = nullptr;
-	}*/
-
+	
+	//Get the rock resources ready include loading and storing
 	sf::Texture rockTexture;
-	rockTexture.loadFromFile("Rock.png");
+	rockTexture.loadFromFile("Resources/Rock.png");
 
 	const int maxRocksOnScreen = 15;
 	
@@ -99,17 +88,18 @@ int main()
 		rockHolder[i] = nullptr;
 	}
 	
-	
+	//Keep track of the last time a rock spawned so game will know if wants to spawn another one
 	auto lastRockSpawned = std::chrono::high_resolution_clock::now();
 	
-
+	//Load the player character resources
 	sf::Texture playerShipTexture;
-	playerShipTexture.loadFromFile("PlayerShip.png");
+	playerShipTexture.loadFromFile("Resources/PlayerShip.png");
 	PlayerShip player(&playerShipTexture);
 
 	bool shotCooldown = false;
 	auto start = std::chrono::high_resolution_clock::now();
 
+	//Keep the window open until either the player closes the window or runs out of health
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -119,6 +109,7 @@ int main()
 				window.close();
 		}
 
+		//The Player's inputs
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
 			player.rotateClockwise();
@@ -136,18 +127,19 @@ int main()
 			if (player.attemptShield())
 			{
 				shieldShape.setPosition(player.getSprite()->getPosition());
-				//window.draw(shieldShape);
 				shieldActive = true;
 			}
 		}
+		//Controls for switching asteroids
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::O))
 		{
-			rockTexture.loadFromFile("Rock.png");
+			rockTexture.loadFromFile("Resources/Rock.png");
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
 		{
-			rockTexture.loadFromFile("Cage.png");
+			rockTexture.loadFromFile("Resources/Cage.png");
 		}
+		//Check if the player wants to shoot and fire a shot for them
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
 			if (!shotCooldown)
@@ -209,7 +201,7 @@ int main()
 
 		
 
-
+		//Draw the game objects
 		window.clear();
 
 
@@ -218,6 +210,7 @@ int main()
 		{
 			if (bulletHolder[i]!=nullptr)
 			{
+				//Delete the bullets that are no longer on screen. If still on screen draw them
 				if (bulletHolder[i]->isOffScreen(windowHeight, windowWidth))
 				{
 					delete bulletHolder[i];
@@ -233,6 +226,7 @@ int main()
 
 		sf::FloatRect shipBox = player.getBoundBox();
 
+		//Check if the rocks aren't on screen anymore. If not deleted them. If they are on screen, draw them
 		for (int i = 0; i < maxRocksOnScreen; i++)
 		{
 			if (rockHolder[i]!=nullptr)
@@ -241,7 +235,6 @@ int main()
 				{
 					delete rockHolder[i];
 					rockHolder[i] = nullptr;
-					//rockHolder[i]->destroy();
 				}
 				else
 				{
@@ -262,18 +255,10 @@ int main()
 							player.dealDamage(rockHolder[i]->getPower());
 						}
 
-						/*for (int k = 0; k < maxNumberOfFire; k++)
-						{
-							if (fireHolder[k] == nullptr)
-							{
-								fireHolder[k] = new Explosion(&fireImageSheet, rockHolder[i]->getDirection());
-								break;
-							}
-						}*/
+						
 
 						delete rockHolder[i];
 						rockHolder[i] = nullptr;
-						//rockHolder[i]->destroy();
 						
 					}
 				}
@@ -290,21 +275,13 @@ int main()
 							sf::FloatRect bulletBox = bulletHolder[j]->getBoundBox();
 							if (rockBox.intersects(bulletBox))
 							{
+								//If the player shoots a rock, they recover a little bit of shield health
 								score += rockHolder[i]->getValue();
 								player.increaseShield(2);
 
-								/*for (int k = 0; k < maxNumberOfFire; k++)
-								{
-									if (fireHolder[k] == nullptr)
-									{
-										fireHolder[k] = new Explosion(&fireImageSheet, rockHolder[i]->getDirection());
-										break;
-									}
-								}*/
 								
 								delete rockHolder[i];
 								rockHolder[i] = nullptr;
-								//rockHolder[i]->destroy();
 								delete bulletHolder[j];
 								bulletHolder[j] = nullptr;
 							}
@@ -318,42 +295,26 @@ int main()
 
 		auto end = std::chrono::high_resolution_clock::now();
 		
+		//Need to limit the ships firing speed
 		if (shotCooldown&&((std::chrono::duration_cast<std::chrono::milliseconds>(end-start).count())>shotInterval))
 		{
 			shotCooldown = false;
 		}
 
+		//Draw the ship
 		window.draw(*player.getSprite());
 
-		
+		//Draw the shield if active
 		if (shieldActive)
 		{
-			//shieldShape.setPosition(player.getSprite()->getPosition());
 			shieldActive = false;
 			window.draw(shieldShape);
 		}
 
-		//Draw the explosions
-		/*for (int i = 0; i < maxNumberOfFire; i++)
-		{
-			if (fireHolder[i] != nullptr)
-			{
-				fireHolder[i]->advanceAnimation();
-
-				if (fireHolder[i]->checkIfDone())
-				{
-					delete fireHolder[i];
-					fireHolder[i] = nullptr;
-				}
-				else
-				{
-					window.draw(*fireHolder[i]->getSprite());
-				}
-			}
-		}*/
+		
 		
 
-		//Draw the health bar
+		//Draw the health bar and shieldbars
 		healthBarFront.setSize(sf::Vector2f(2*player.getCurrentHealth(), healthBarHeight));
 		window.draw(healthBarBack);
 		window.draw(healthBarFront);
@@ -367,6 +328,7 @@ int main()
 
 		window.display();
 
+		//If the player runs out of health. Close the game window and open the highscore window
 		if (player.getCurrentHealth() <= 0)
 		{
 			window.close();
@@ -384,16 +346,11 @@ int main()
 
 			std::string* playerNames = scoreManager.getPlayers();
 			std::string* scoreValues = scoreManager.getScores();
-			//int* numOfEntries = scoreManager.getNumberOfEntries();
 			int newPlacing = 10;
 			std::string prior = "";
 			std::string after = "";
 			bool placeFound = false;
 
-			/*if (*numOfEntries < 9)
-			{
-				(*numOfEntries)++;
-			}*/
 
 			std::string tempPlayer = "";
 			std::string tempScore = "";
@@ -406,9 +363,7 @@ int main()
 					{
 						newPlacing = i;
 						placeFound = true;
-						//tempPlayer = playerNames[i+1];
-						//tempScore = scoreValues[i+1];
-						//i--;
+
 						for (int j = 9; j > newPlacing; j--)
 						{
 							playerNames[j] = playerNames[j-1];
@@ -423,8 +378,6 @@ int main()
 				else
 				{
 					
-						//playerNames[i + 1] = playerNames[i];
-						//scoreValues[i + 1] = scoreValues[i];
 						after = after + playerNames[i] + "   " + scoreValues[i]+"\n";
 					
 				}
@@ -437,6 +390,7 @@ int main()
 				previousName[k] = "";
 			}
 
+			//Player enters their name if they scored well enough
 			while (scoreBoard.isOpen())
 			{
 				sf::Event scoreEvent;
@@ -451,6 +405,7 @@ int main()
 								playerNames[newPlacing] = name;
 								scoreValues[newPlacing] = std::to_string(score);
 							}
+							//Save the new highscores
 							scoreManager.save(fileName);
 							scoreBoard.close();
 						}
@@ -472,7 +427,6 @@ int main()
 								}
 								else if (scoreEvent.text.unicode < 128)
 								{
-									//std::cout << scoreEvent.text.unicode << "\n";
 									name += static_cast<char>(scoreEvent.text.unicode);
 									lettersEntered++;
 									previousName[lettersEntered] = name;
@@ -495,6 +449,7 @@ int main()
 		}
 	}
 
+	//Delete the game objects
 	for (int i = 0; i < maxRocksOnScreen; i++)
 	{
 		if (rockHolder[i] != nullptr)
@@ -502,13 +457,7 @@ int main()
 			delete rockHolder[i];
 		}
 	}
-	/*for (int i = 0; i < maxNumberOfFire; i++)
-	{
-		if (fireHolder[i] != nullptr)
-		{
-			delete fireHolder[i];
-		}
-	}*/
+	
 	for (int i = 0; i < maxBulletsOnScreen; i++)
 	{
 		if (bulletHolder[i] != nullptr)

@@ -50,10 +50,6 @@ bool PlayerShip::isOffScreen(int screenHeight, int screenWidth)
 
 void PlayerShip::move(const double PI, int width, int height)
 {
-	//sprite.move(direction);
-	//sprite.rotate(rotationAngle);
-	//int x = shipSpeed * sin(currentAngle*PI / 180);
-	//int y = shipSpeed * cos(currentAngle*PI / 180);
 	sprite.move(shipSpeed * sin(currentAngle*PI / 180), -1* shipSpeed * cos(currentAngle*PI / 180));
 
 	int x = sprite.getPosition().x;
@@ -83,11 +79,6 @@ sf::FloatRect PlayerShip::getBoundBox()
 {
 	return sprite.getGlobalBounds();
 }
-
-/*void PlayerShip::setCurrentAngle(int angle)
-{
-	currentAngle = angle;
-}*/
 
 int PlayerShip::getCurrentAngle()
 {

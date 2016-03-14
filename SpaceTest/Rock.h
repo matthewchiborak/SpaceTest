@@ -9,13 +9,9 @@ private:
 	int rockSpeed;
 	sf::Vector2f direction;
 	sf::Sprite sprite;
-	//sf::Image* fireSheet;
 	int rotationAngle;
 	int power;
 	int value;
-	//int explosionCounter;
-	//int spriteSize;
-	//sf::Texture fireTexture;
 
 public:
 	Rock(sf::Texture* conTexture);
@@ -28,7 +24,5 @@ public:
 	sf::FloatRect getBoundBox();
 	int getPower();
 	int getValue();
-	//void destroy();
-	//int getExplosionCounter();
 };
 #endif
